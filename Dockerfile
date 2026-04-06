@@ -1,16 +1,17 @@
 # Stage 1: Test
-FROM golang:tip-alpine3.23 AS tester
+FROM golang:1.26.1-alpine3.23 AS tester
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 COPY internal ./internal
 COPY tests ./tests
-RUN go test -v ./...
-RUN go test ./... -coverpkg=./... -coverprofile=coverage.out
+# RUN go test -v -count=1 ./...
+RUN go test -v -count=1 ./... -coverpkg=./... -coverprofile=coverage.out
 RUN go tool cover -html=coverage.out -o coverage.html
+CMD ["go", "test", "-v", "./...", "-count=1", "-coverpkg=./...", "-coverprofile=coverage.out"]
 
 # Stage 2: Build
-FROM golang:tip-alpine3.23 AS builder
+FROM golang:1.26.1-alpine3.23 AS builder
 WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download

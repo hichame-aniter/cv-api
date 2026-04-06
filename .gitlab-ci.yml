@@ -1,5 +1,83 @@
-test:
-  script: make docker-test-run
+image: golang:tip-alpine3.23
+stages:
+  - test
+  - build
+  - deliver
+  - deploy
 
-build:
-  script: docker copose build
+variables:
+  CONTAINER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
+  CLUSTER_NAME: homelab-cluster
+  COVERAGE_THRESHOLD: 90  # Minimum coverage percentage required
+
+services:
+  - docker:dind
+
+unit_tests:
+  stage: test
+  script: 
+    - echo "Running unit tests..."
+    # - make docker-test-run
+    - go test -v ./... -coverpkg=./... -coverprofile=coverage.out
+    - go tool cover -func=coverage.out | grep total | awk '{print $3}' > coverage_percentage.txt
+    - go tool cover -html=coverage.out -o coverage.html
+  artifacts:
+    paths:
+      - coverage.txt
+      - coverage.html
+      - coverage_percentage.txt
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.out
+    expire_in: 7 days
+  coverage: '/total:.*?(\d+(?:\.\d+)?)%/'
+
+# Job for verifying coverage meets threshold
+coverage-verify:
+  stage: verify
+  image: alpine:latest
+  needs:
+    - unit_tests
+  script:
+    - COVERAGE=$(cat coverage_percentage.txt | tr -d '%')
+    - echo "Current coverage: ${COVERAGE}%"
+    - echo "Required coverage: ${COVERAGE_THRESHOLD}%"
+    - |
+      if (( $(echo "$COVERAGE < $COVERAGE_THRESHOLD" | bc -l) )); then
+        echo "❌ Coverage ${COVERAGE}% is below threshold ${COVERAGE_THRESHOLD}%"
+        exit 1
+      else
+        echo "✅ Coverage ${COVERAGE}% meets threshold ${COVERAGE_THRESHOLD}%"
+      fi
+  dependencies:
+    - unit_tests
+
+# Optional: Generate detailed coverage report for GitLab UI
+coverage-report:
+  stage: verify
+  image: golang:${GO_VERSION}
+  needs:
+    - unit_tests
+  script:
+    # Install coverage reporting tool
+    - go install github.com/boumenot/gocover-cobertura@latest
+    - gocover-cobertura < coverage.out > coverage.xml
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml
+  dependencies:
+    - unit_tests
+
+## Publish to Docker Hub registry 
+docker_build:
+  stage: build
+  image: docker
+  services:
+    - docker:dind
+  script: 
+    - echo "Building Docker image..."
+    - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+    - docker build -t cv-api-backend

@@ -8,13 +8,13 @@ help:
 	@echo "	make docker-run-test	- Run tester image"
 
 test:
-	go test ./... -coverpkg=./... -coverprofile=coverage.out
+	go test -v ./... -coverpkg=./... -coverprofile=coverage.out
 	go tool cover -html=coverage.out -o coverage.html
 
 docker-test-build:
-	docker build --target tester -t cv-api-backend-test .
+	docker build --progress=plain --target tester -t cv-api-backend-test .
 
 docker-test-run: docker-test-build
 	docker stop cv-api-backend-test || true
 	docker rm cv-api-backend-test || true
-	docker run --rm --name cv-api-backend-test cv-api-backend-test:latest
+	docker run --name cv-api-backend-test cv-api-backend-test:latest
