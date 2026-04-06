@@ -1,6 +1,7 @@
 image: golang:tip-alpine3.23
 stages:
   - test
+  - verify
   - build
   - deliver
   - deploy
@@ -41,14 +42,14 @@ coverage-verify:
     - unit_tests
   script:
     - COVERAGE=$(cat coverage_percentage.txt | tr -d '%')
-    - echo "Current coverage: ${COVERAGE}%"
-    - echo "Required coverage: ${COVERAGE_THRESHOLD}%"
+    - echo "Current coverage ${COVERAGE}%"
+    - echo "Required coverage ${COVERAGE_THRESHOLD}%"
     - |
       if (( $(echo "$COVERAGE < $COVERAGE_THRESHOLD" | bc -l) )); then
-        echo "❌ Coverage ${COVERAGE}% is below threshold ${COVERAGE_THRESHOLD}%"
+        echo "Coverage ${COVERAGE}% is below threshold ${COVERAGE_THRESHOLD}%"
         exit 1
       else
-        echo "✅ Coverage ${COVERAGE}% meets threshold ${COVERAGE_THRESHOLD}%"
+        echo "Coverage ${COVERAGE}% meets threshold ${COVERAGE_THRESHOLD}%"
       fi
   dependencies:
     - unit_tests
