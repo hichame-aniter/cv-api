@@ -1,0 +1,131 @@
+{
+ "basics": {
+  "name": "",
+  "label": "",
+  "image": null,
+  "email": "",
+  "phone": "",
+  "url": "",
+  "summary": "",
+  "location": {
+   "address": "",
+   "postalCode": "",
+   "city": "",
+   "countryCode": "",
+   "region": ""
+  },
+  "profiles": null
+ },
+ "work": [
+  {
+   "id": "0",
+   "name": "",
+   "position": "",
+   "url": "",
+   "startDate": "",
+   "endDate": "",
+   "summary": "",
+   "highlights": null
+  }
+ ],
+ "volunteer": [
+  {
+   "id": "",
+   "organization": "Organization",
+   "position": "Volunteer",
+   "url": "https://organization.com/",
+   "startDate": "2012-01-01",
+   "endDate": "2013-01-01",
+   "summary": "Description…",
+   "highlight": null
+  }
+ ],
+ "education": [
+  {
+   "id": "",
+   "institution": "University",
+   "url": "https://institution.com/",
+   "area": "Software Development",
+   "studyType": "Bachelor",
+   "startDate": "2011-01-01",
+   "endDate": "2013-01-01",
+   "score": "4.0",
+   "courses": [
+    "DB1101 - Basic SQL"
+   ]
+  }
+ ],
+ "awards": [
+  {
+   "id": "",
+   "title": "Award",
+   "date": "2014-11-01",
+   "awarder": "Company",
+   "summary": "There is no spoon."
+  }
+ ],
+ "certificates": [
+  {
+   "id": "",
+   "name": "Certificate",
+   "date": "2021-11-07",
+   "issuer": "Company",
+   "url": "https://certificate.com"
+  }
+ ],
+ "publications": [
+  {
+   "id": "",
+   "name": "Publication",
+   "publisher": "Company",
+   "releaseDate": "2014-10-01",
+   "url": "https://publication.com",
+   "summary": "Description…"
+  }
+ ],
+ "skills": [
+  {
+   "id": "",
+   "name": "Web Development",
+   "level": "Master",
+   "keywords": [
+    "HTML",
+    "CSS",
+    "JavaScript"
+   ]
+  }
+ ],
+ "languages": [
+  {
+   "id": "",
+   "language": "English",
+   "fluency": "Native speaker"
+  }
+ ],
+ "interests": [
+  {
+   "id": "",
+   "name": "Wildlife"
+  }
+ ],
+ "references": [
+  {
+   "id": "",
+   "name": "Jane Doe",
+   "reference": "Reference…"
+  }
+ ],
+ "projects": [
+  {
+   "id": "",
+   "name": "Project",
+   "startDate": "2019-01-01",
+   "endDate": "2021-01-01",
+   "description": "Description...",
+   "highlights": [
+    "Won award at AIHacks 2016"
+   ],
+   "url": "https://project.com/"
+  }
+ ]
+}
