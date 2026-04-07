@@ -17,18 +17,6 @@ services:
 
 unit_tests:
   stage: test
-  cache:
-    paths:
-      - .cache/go/
-      - go.sum
-    key:
-      files:
-        - go.sum
-  before_script:
-    - mkdir -p .cache/go
-    - export GOPATH=$CI_PROJECT_DIR/.cache/go
-    - export GOCACHE=$CI_PROJECT_DIR/.cache/go/build
-    - go mod download
   script: 
     - echo "Running unit tests..."
     - go test -v ./... -coverpkg=./... -coverprofile=coverage.out
