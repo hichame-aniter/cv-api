@@ -90,4 +90,4 @@ docker_build:
       fi
   artifacts:
     paths:
-      - /root/app
+      - ./app
