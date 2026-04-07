@@ -63,8 +63,15 @@ docker_build:
   image: docker
   services:
     - docker:dind
+  before_script:    
+    - echo "$cv_api_data" > ./data/cv.json
   script: 
     - echo "Building Docker image..."
     - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
     - docker build -t $CONTAINER_IMAGE .
     - docker push $CONTAINER_IMAGE
+    - |
+      if [ -n "$CI_COMMIT_TAG"]; then
+        echo "Tagging docker image with Git tag..."
+        docker tag $$CONTAINER_IMAGE $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
+        docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_TAG
