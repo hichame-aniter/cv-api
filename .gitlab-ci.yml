@@ -56,22 +56,6 @@ coverage-verify:
     - unit_tests
 
 # Optional: Generate detailed coverage report for GitLab UI
-coverage-report:
-  stage: verify
-  image: golang:${GO_VERSION}
-  needs:
-    - unit_tests
-  script:
-    # Install coverage reporting tool
-    - go install github.com/boumenot/gocover-cobertura@latest
-    - gocover-cobertura < coverage.out > coverage.xml
-  artifacts:
-    reports:
-      coverage_report:
-        coverage_format: cobertura
-        path: coverage.xml
-  dependencies:
-    - unit_tests
 
 ## Publish to Docker Hub registry 
 docker_build:
