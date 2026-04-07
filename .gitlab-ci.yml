@@ -51,6 +51,9 @@ coverage-verify:
       else
         echo "Coverage ${COVERAGE}% meets threshold ${COVERAGE_THRESHOLD}%"
       fi
+  only:
+    - production
+    - tags
   dependencies:
     - unit_tests
 
