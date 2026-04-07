@@ -17,15 +17,26 @@ services:
 
 unit_tests:
   stage: test
+  cache:
+    paths:
+      - .cache/go/
+      - go.sum
+    key:
+      files:
+        - go.sum
+  before_script:
+    - mkdir -p .cache/go
+    - export GOPATH=$CI_PROJECT_DIR/.cache/go
+    - export GOCACHE=$CI_PROJECT_DIR/.cache/go/build
+    - go mod download
   script: 
     - echo "Running unit tests..."
-    # - make docker-test-run
     - go test -v ./... -coverpkg=./... -coverprofile=coverage.out
     - go tool cover -func=coverage.out | grep total | awk '{print $3}' > coverage_percentage.txt
     - go tool cover -html=coverage.out -o coverage.html
   artifacts:
     paths:
-      - coverage.txt
+      - coverage.out
       - coverage.html
       - coverage_percentage.txt
     reports:
