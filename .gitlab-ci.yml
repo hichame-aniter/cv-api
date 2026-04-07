@@ -10,6 +10,7 @@ variables:
   CONTAINER_IMAGE: $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
   CLUSTER_NAME: homelab-cluster
   COVERAGE_THRESHOLD: 90  # Minimum coverage percentage required
+  GO_VERSION: "1.26.1-alpine3.23
 
 services:
   - docker:dind
