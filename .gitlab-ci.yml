@@ -64,6 +64,7 @@ docker_build:
   services:
     - docker:dind
   before_script:    
+    - mkdir data
     - echo "$cv_api_data" > ./data/cv.json
   script: 
     - echo "Building Docker image..."
