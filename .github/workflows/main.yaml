@@ -1,0 +1,15 @@
+name: First Workflow
+on: 
+  push:
+    branches:
+      - main
+jobs:
+  job_1:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Print a Hello world message
+        run: echo "Hello from workflow"
+      - name: Checkout repository
+        uses: actions/checkout@v6
+      - name: List files
+        run: ls -la

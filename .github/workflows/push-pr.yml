@@ -1,0 +1,25 @@
+name: Push PR Workflow
+on: 
+  pull_request:
+    branches:
+      - main
+      - production
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  push:
+    branches:
+      - "feature/**"    
+    paths:
+      - "internal/**"
+      - "cmd/**"
+jobs:
+  unit_tests:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6  
+      - name: Setup Go environment
+        uses: actions/setup-go@v6
+      - name: Download libraries
+        run: go mod download
