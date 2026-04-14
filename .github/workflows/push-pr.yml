@@ -1,0 +1,33 @@
+name: Push PR Workflow
+on: 
+  pull_request:
+    branches:
+      - main
+      - production
+    paths-ignore:
+      - "README.md"
+      - "docs/**"
+  push:
+    branches:
+      - "feature/**"    
+    paths:
+      - "internal/**"
+      - "cmd/**"
+jobs:
+  unit_tests:
+    runs-on: ubuntu-slim
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6  
+      - name: Setup Go environment
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.26.1'
+      - name: Add module requirements and sums
+        run: |
+          go mod init cv-api
+          go mod tidy
+      - name: Run Tests
+        run: |
+          go test ./... -coverpkg=./... -coverprofile=coverage.out
+          go tool cover -html=coverage.out -o coverage.html
